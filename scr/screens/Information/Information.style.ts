@@ -12,8 +12,8 @@ const styles = StyleSheet.create({
     },
     info_border: {
         width: wp('31%'),
-        height: hp('41%'),
-        right: hp('0.3%')
+        height: hp('41.5%'),
+        right: hp('0.2%')
     },
     info_img: {
         height: hp('16%'),
@@ -37,6 +37,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
 
+    },
+    avatar_img: {
+        right: hp('1.8%')
     },
     info_text: {
         color: '#880B0B',

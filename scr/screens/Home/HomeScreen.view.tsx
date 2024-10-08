@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { View, ImageBackground, Text, Image, TouchableOpacity, TextInput, ActivityIndicator } from "react-native"
+import { View, ImageBackground, Text, Image, TouchableOpacity, TextInput, Alert } from "react-native"
 import styles from "./HomeScreen.style"
 import Background from "../../components/Background";
 import LogoHeader from "../../components/LogoHeader";
@@ -7,8 +7,12 @@ import ContentWrapper from "../../components/ContentWrapper";
 import { Video, ResizeMode } from 'expo-av';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/Navigation';
-import { useFonts } from 'expo-font';
-
+import { fetchUserData } from "../../redux/slices/userSlice";
+import { setNoodlesLeft } from "../../redux/slices/noodlesSlice";
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState, AppDispatch } from '../../redux/store/store';
+import { FIRESTORE } from "../../firebase/firebaseConfig";
+import { collection, query, where, getDocs } from 'firebase/firestore'; 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
 type Props = {
@@ -17,17 +21,38 @@ type Props = {
 
 
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
-    // const [fontsLoaded] = useFonts({
-    //     'SVNNexaRustSlabBlackShadow': require('../../../assets/fonts/SVN-Nexa_Rust_Slab_Black_Shadow.ttf'),
-    //     'NunitoRegular': require('../../../assets/fonts/Nunito/static/Nunito-Regular.ttf'),
-    //     'timeNew': require('../../../assets/fonts/times new roman.ttf'),
-    //   });
-
-    //   if (!fontsLoaded) {
-    //     return <ActivityIndicator size="large" color="#0000ff" />; // Hiển thị màn hình loading nếu font chưa tải xong
-    //   }
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
+    const dispatch: AppDispatch = useDispatch();
+    const handleSubmit = async () => {
+        if (phone) {
+          try {
+            // Gọi hàm fetchUserData và lấy dữ liệu trực tiếp
+            const response = await dispatch(fetchUserData(phone)).unwrap();  // unwrap để lấy dữ liệu gốc
+            
+            if (response && response.userData) {  // Đảm bảo response có chứa userData
+              const { userData } = response;  // Lấy userData từ response
+              // Cập nhật số mì của người dùng vào Redux
+              dispatch(setNoodlesLeft(userData.noodlesLeft));  // Cập nhật noodlesLeft từ userData
+              
+              // Sau khi cập nhật Redux, điều hướng đến màn hình Information
+              navigation.navigate('Information', { phoneNumber: phone });
+            } else {
+              console.log('User does not exist or does not have noodle data.');
+              // Hiển thị thông báo lỗi khi không tìm thấy người dùng hoặc không có dữ liệu mì
+              Alert.alert('Lỗi', 'Số điện thoại không tồn tại hoặc không có dữ liệu mì.');
+            }
+          } catch (error) {
+            console.log('Error while retrieving user information:', error);
+            // Xử lý lỗi lấy thông tin từ Firestore
+            Alert.alert('Lỗi', 'Không thể lấy thông tin người dùng. Vui lòng thử lại sau.');
+          }
+        } else {
+          // Xử lý khi không có số điện thoại nhập vào
+          Alert.alert('Lỗi', 'Vui lòng nhập số điện thoại.');
+        }
+      };      
+      
     return (
         <Background>
             <LogoHeader title="WELCOME" />
@@ -73,17 +98,17 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
                 </TouchableOpacity>
             </View> */}
             <View style={styles.input_form}>
-                <Text style={styles.label}>Họ Tên:</Text>
+                <Text style={styles.label}>Full name:</Text>
                 <TextInput
-                    placeholder="Nhập họ và tên"
+                    placeholder="Enter your first and last name"
                     value={name}
                     onChangeText={setName}
                     placeholderTextColor="white"
                     style={styles.input}
                 />
-                <Text style={styles.label}>Số điện thoại:</Text>
+                <Text style={styles.label}>Phone number:</Text>
                 <TextInput
-                    placeholder="Nhập số điện thoại"
+                    placeholder="Enter phone number"
                     value={phone}
                     onChangeText={setPhone}
                     keyboardType="numeric"
@@ -91,7 +116,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
                     style={styles.input}
                 />
                 <TouchableOpacity
-                    onPress={() => navigation.navigate('Information')}
+                    onPress={handleSubmit}
                     style={styles.submit}
                 >
                     <Text style={styles.submit_text}>SUBMIT</Text>

@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import fontReducer from '../slices/fontSlice';
 import noodlesReducer from '../slices/noodlesSlice';
+import userReducer from '../slices/userSlice';
 const store = configureStore({
   reducer: {
     fonts: fontReducer,
     noodles: noodlesReducer,
+    user: userReducer,
   },
 });
 
