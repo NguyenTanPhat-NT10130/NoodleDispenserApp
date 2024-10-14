@@ -11,6 +11,7 @@ const EmptyScreen: React.FC = () => {
         <Background>
             <LogoHeader
                 title="out of noodles"
+                titleStyle={{fontSize: 30}} // just for devi
             />
             <View style={styles.empty_wrap}>
             <Text style={styles.empty_text}>

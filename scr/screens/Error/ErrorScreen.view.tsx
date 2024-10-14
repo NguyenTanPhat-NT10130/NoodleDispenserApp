@@ -3,14 +3,23 @@ import { View, Text, Image, TouchableOpacity } from "react-native"
 import Background from "../../components/Background";
 import LogoHeader from "../../components/LogoHeader";
 import styles from "./ErrorScreen.style";
-const ErrorScreen: React.FC = () => {
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../navigation/Navigation';
+type ErrorScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Error'>;
+type Props = {
+    navigation: ErrorScreenNavigationProp;
+};
+const ErrorScreen: React.FC<Props> = ({navigation}) => {
     return(
         <Background>
             <LogoHeader
                 title="Error"
             />
             <Text style={styles.error_text}>Can not recongnize your ID card.</Text>
-            <TouchableOpacity style={styles.again_btn}>
+            <TouchableOpacity 
+                onPress={() => navigation.navigate('Home')}
+                style={styles.again_btn}
+            >
                 <Text style={styles.again_text}>Please scan again.</Text>
             </TouchableOpacity>
             <Image 
@@ -32,7 +41,9 @@ const ErrorScreen: React.FC = () => {
                     resizeMode="contain"
                     style={styles.scan_img}
                 />
-                <TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate('Home')}
+                >
                     <Image
                         source={require('../../../assets/images/Arrow.png')}
                         resizeMode="contain"

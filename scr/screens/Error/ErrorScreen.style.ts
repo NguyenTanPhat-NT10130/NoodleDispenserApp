@@ -11,10 +11,11 @@ const styles = StyleSheet.create({
     again_btn:{
         backgroundColor: '#D86643',
         borderRadius: 7,
-        width: wp('37%'),
-        height: hp('4%'),
+        width: wp('40%'),
+        height: hp('4.4%'),
         alignItems: 'center',
-        top: hp('2%')
+        top: hp('2%'),
+        zIndex: 1
 
     },
     again_text: {

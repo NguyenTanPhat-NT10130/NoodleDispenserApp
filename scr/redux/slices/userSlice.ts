@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { FIRESTORE } from '../../firebase/firebaseConfig';
-import { collection, onSnapshot, query, where, getDocs  } from 'firebase/firestore';
+import { collection, onSnapshot, query, where, getDocs} from 'firebase/firestore';
 import { AppDispatch } from '../store/store';  // Import AppDispatch để sử dụng khi dispatch action
 
 // Interface for user data
@@ -20,6 +20,8 @@ interface UserState {
     userData: { 
         [phoneNumber: string]: UserData | null;  // Lưu thông tin của nhiều người dùng
     };
+    status: 'idle' | 'loading' | 'succeeded' | 'failed';
+    error: string | null;  // Để lưu lỗi nếu có
 }
 // Chuyển đổi Timestamp thành chuỗi ngày
 const formatTimestampToDate = (timestamp: any): string => {
@@ -40,6 +42,8 @@ const formatTimestampToDate = (timestamp: any): string => {
 
 const initialState: UserState = {
     userData: {},  // Object để chứa thông tin nhiều người dùng
+    status: 'idle',
+    error: null,
 };
 
 // Async action để fetch dữ liệu từ Firestore
@@ -81,7 +85,38 @@ export const fetchUserData = createAsyncThunk(
   }
 );
 
-  
+// Hàm fetch dữ liệu người dùng dựa trên id
+export const fetchUserDataById = createAsyncThunk(
+  'user/fetchUserDataById',
+  async (id: string): Promise<{ userData: UserData | null, docId: string | null }> => {
+    const q = query(
+      collection(FIRESTORE, 'users'),
+      where('id', '==', id)  // So sánh với field 'id' bên trong document
+    );
+
+    const snapshot = await getDocs(q);
+
+    if (!snapshot.empty) {
+      const userDoc = snapshot.docs[0].data();
+      const docId = snapshot.docs[0].id;
+
+      const userData: UserData = {
+        fullName: userDoc.fullName || 'Unknown',
+        phoneNumber: userDoc.phoneNumber || '',
+        department: userDoc.Department || 'Unknown',
+        birthday: formatTimestampToDate(userDoc.Birthday),
+        noodlesLeft: userDoc.noodlesLeft || 0,
+        avatarIMG: userDoc.avatarIMG || null,
+        gender: userDoc.Gender || 'Unknown',
+        docId,
+      };
+
+      return { userData, docId };
+    }
+
+    return { userData: null, docId: null };
+  }
+);
 
 // Slice quản lý trạng thái người dùng
 const userSlice = createSlice({
@@ -100,6 +135,31 @@ const userSlice = createSlice({
           };
         }
       });
+
+      // Xử lý fetchUserDataById thành công (dựa trên id từ QR code)
+    builder.addCase(fetchUserDataById.fulfilled, (state, action: PayloadAction<{ userData: UserData | null, docId: string | null }>) => {
+      const { userData, docId } = action.payload;
+
+      if (userData && userData.phoneNumber && docId) {
+        // Lưu thông tin người dùng dựa trên số điện thoại và docId
+        state.userData[userData.phoneNumber] = {
+          ...userData,
+          docId,  // Lưu docId để sau này sử dụng khi cập nhật
+        };
+      }
+    });
+
+    // Xử lý trường hợp fetch thất bại
+    builder
+      .addCase(fetchUserDataById.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message || 'Failed to fetch user data by ID';
+      })
+      .addCase(fetchUserDataById.pending, (state) => {
+        state.status = 'loading';
+        state.error = null;
+      });
+      
     },    
 });
 

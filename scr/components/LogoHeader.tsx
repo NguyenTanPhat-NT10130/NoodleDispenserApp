@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     title: {
         color: '#C71A1A',
         fontSize: 34,
-        lineHeight: 130,
+        lineHeight: 130, // 130
         bottom: hp('0%'),
         fontFamily: 'SVNNexaRustSlabBlackShadow',
     },

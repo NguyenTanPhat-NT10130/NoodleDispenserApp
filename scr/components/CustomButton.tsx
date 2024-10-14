@@ -12,16 +12,14 @@ interface CustomButtonProps {
 
 const CustomButton: React.FC<CustomButtonProps> = ({ text, onPress, buttonStyle, textStyle, imageStyle }) => {
   return (
-    <TouchableOpacity onPress={onPress}>
-      <View style={[styles.btn_wrap, buttonStyle]}>
-        <View style={styles.btn}>
-          <Image
-            source={require('../../assets/images/wavy.png')}
-            resizeMode="contain"
-            style={[styles.wavy_img, imageStyle]}
-          />
-          <Text style={[styles.btn_text, textStyle]}>{text}</Text>
-        </View>
+    <TouchableOpacity onPress={onPress} style={[styles.btn_wrap, buttonStyle]}>
+      <View style={styles.btn}>
+        <Image
+          source={require('../../assets/images/wavy.png')}
+          resizeMode="contain"
+          style={[styles.wavy_img, imageStyle]}
+        />
+        <Text style={[styles.btn_text, textStyle]}>{text}</Text>
       </View>
     </TouchableOpacity>
   );

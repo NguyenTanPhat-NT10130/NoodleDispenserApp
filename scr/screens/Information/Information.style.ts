@@ -36,7 +36,6 @@ const styles = StyleSheet.create({
     info_row: {
         flexDirection: 'row',
         alignItems: 'center',
-
     },
     avatar_img: {
         right: hp('1.8%')
@@ -44,19 +43,20 @@ const styles = StyleSheet.create({
     info_text: {
         color: '#880B0B',
         fontFamily: 'Nunito-Bold',
-        fontSize: 16.2,
+        fontSize: 15, // simulat: 16.2, devi: 15
         lineHeight: 26.1,
         flex: 1,
         textAlign: 'left'
 
     },
     info_value: {
-        paddingRight: 55,
-        fontSize: 13,
+        paddingRight: 30, // simulat: 55, devi: 30
+        fontSize: 11, // simulat: 13, devi: 11
         fontFamily: 'Nunito-Bold',
         color: '#880B0B',
         flex: 1,
-        textAlign: 'left'
+        textAlign: 'left',
+        top: hp('0.1%') // just for devi: 0.1
     },
     bottom_container:{
         width: wp('100%'),
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',
-        top: hp('1%')
+        top: hp('-0.3%') // simulat: 1, devi: -0.3
     },
     bottom_text: {
         fontFamily: 'Paytone One',
