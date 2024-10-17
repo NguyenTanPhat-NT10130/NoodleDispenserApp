@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { View, Text, Image, Alert, TouchableOpacity, ScrollView } from "react-native"
+import { View, Text, Image, Alert, TouchableOpacity} from "react-native"
 import { Avatar, ListItem } from 'react-native-elements';
 import Background from "../../components/Background";
 import LogoHeader from "../../components/LogoHeader";
@@ -38,7 +38,6 @@ const InformationScreen: React.FC<Props> = ({ navigation }) => {
 
 
     return (
-        <ScrollView>
             <Background>
                 <LogoHeader
                     title="INFORMATION"
@@ -135,7 +134,6 @@ const InformationScreen: React.FC<Props> = ({ navigation }) => {
                 // onPress={() =>  console.log('Done')}
                 />
             </Background>
-        </ScrollView>
     )
 }
 

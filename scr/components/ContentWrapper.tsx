@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
         width: wp('84%'), // 84
         height: hp('26%'), // 26
         transform: [{ rotate: '-90deg' }],
-        left: wp('1.7%'),
+        left: wp('1.7%'), // 1.7
         top: hp('0.5%'),
         justifyContent: 'center',
         alignItems: 'center',

@@ -4,9 +4,15 @@ import Background from "../../components/Background";
 import LogoHeader from "../../components/LogoHeader";
 import ContentWrapper from "../../components/ContentWrapper";
 import CustomButton from "../../components/CustomButton";
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../navigation/Navigation';
 import styles from "./EmptyScreen.style";
+type EmptyScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Done'>;
 
-const EmptyScreen: React.FC = () => {
+type Props = {
+    navigation: EmptyScreenNavigationProp;
+};
+const EmptyScreen: React.FC<Props> = ({navigation}) => {
     return (
         <Background>
             <LogoHeader
@@ -23,6 +29,10 @@ const EmptyScreen: React.FC = () => {
                 style={styles.empty_img}
             />
             </View>
+                <CustomButton
+                    text="Back to home"
+                    onPress={() => navigation.navigate('Home')}
+                />
         </Background>
     )
 }

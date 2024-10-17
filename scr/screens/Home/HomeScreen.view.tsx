@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { View, ImageBackground, Text, Image, TouchableOpacity, TextInput, Alert, Modal } from "react-native"
+import { View, ImageBackground, Text, Image, TouchableOpacity, TextInput, Alert, Modal, ScrollView } from "react-native"
 import styles from "./HomeScreen.style"
 import Background from "../../components/Background";
 import LogoHeader from "../../components/LogoHeader";
@@ -32,6 +32,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
     };
     return (
         <Background>
+            <ScrollView contentContainerStyle={styles.wrapp}>
             <LogoHeader title="WELCOME" />
             <ContentWrapper>
                 <Image
@@ -71,20 +72,6 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
                     <QRCodeScanner onClose={handleCloseScanner} />
                 </Modal>
             </View>
-            {/* <View style={styles.bottom}>
-                <Image
-                    source={require('../../../assets/images/Scan_IMG.png')}
-                    resizeMode="contain"
-                    style={styles.scan_img}
-                />
-                <TouchableOpacity>
-                    <Image
-                        source={require('../../../assets/images/Arrow.png')}
-                        resizeMode="contain"
-                        style={styles.arrow_img}
-                    />
-                </TouchableOpacity>
-            </View> */}
             <View style={styles.input_form}>
                 <Text style={styles.label}>Full name:</Text>
                 <TextInput
@@ -111,7 +98,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
                     <Text style={styles.submit_text}>SUBMIT</Text>
                 </TouchableOpacity>
             </View>
-
+            </ScrollView>
         </Background>
     )
 }

@@ -3,6 +3,12 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
+    wrapp:{
+        justifyContent: 'center',
+        alignItems: 'center',
+        bottom: hp('7%')
+    },
+
     image: {
         height: hp('23%'),
         transform: [{ rotate: '-90deg' }],

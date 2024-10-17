@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
         width: wp('100%'),
         height: hp('20%'),
         top: hp('5%')
-    }
+    },
 })
 
 export default styles

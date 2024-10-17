@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Image, Text,ViewStyle, StyleSheet, ActivityIndicator } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { useCustomFonts } from '../hooks/useCustomFonts';
 interface LogoHeaderProps {
   title: string;
   headerStyle?: ViewStyle;
